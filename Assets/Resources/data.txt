@@ -1,0 +1,29 @@
+{
+"questions" : {
+				"1" :{
+						"question":"What is the game about",
+						"options":["food","maze","action","quiz"],
+						"answer":3
+					},
+				"2":{
+						"question":"what is the first letter of the alphabet",
+						"options":["a","b","c","d"],
+						"answer":0
+					},
+				"3":{
+						"question":"How many numbers are in 1111111",
+						"options":["6","7","3","4"],
+						"answer":1
+					},
+				"4":{
+						"question":"what is the color of the sky",
+						"options":["red","blue","green","yellow"],
+						"answer":2
+					},
+				"5":{
+						"question":"A boy will grow up to be a?",
+						"options":["dog","girl","woman","man"],
+						"answer":3
+					}
+			}
+}

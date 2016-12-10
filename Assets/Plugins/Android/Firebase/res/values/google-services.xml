@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="firebase_database_url" translatable="false">https://digital-air-test.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">891125997496</string>
+  <string name="google_storage_bucket" translatable="false">digital-air-test.appspot.com</string>
+  <string name="google_api_key" translatable="false">AIzaSyAlnqHzK57We9jCPUZDHaDpQNDGjHVuLFs</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAlnqHzK57We9jCPUZDHaDpQNDGjHVuLFs</string>
+  <string name="google_app_id" translatable="false">1:891125997496:android:9759b64c287c05bc</string>
+  <string name="default_web_client_id" translatable="false">891125997496-95ca1go1qo1hefh3a7bu6cp9kfuc2en7.apps.googleusercontent.com</string>
+</resources>

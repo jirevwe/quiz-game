@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "891125997496",
+    "firebase_url": "https://digital-air-test.firebaseio.com",
+    "project_id": "digital-air-test",
+    "storage_bucket": "digital-air-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891125997496:android:9759b64c287c05bc",
+        "android_client_info": {
+          "package_name": "com.BS.quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891125997496-95ca1go1qo1hefh3a7bu6cp9kfuc2en7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlnqHzK57We9jCPUZDHaDpQNDGjHVuLFs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
