@@ -8,7 +8,7 @@ public class TextScaler : MonoBehaviour {
     Vector2 screenSize;
     private ScreenOrientation screenOrientation;
     [SerializeField]
-    int largerText, smallerText;
+    int largerText = 0, smallerText = 0;
 
     // Use this for initialization
     void Start () {

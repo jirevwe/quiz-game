@@ -10,14 +10,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     List<Question> questions = new List<Question>();
-    Question currentQuestion;
+    [SerializeField]Question currentQuestion;
     [HideInInspector]
-    public int answerIndex = -1, score = 0, questionCount = 0, connectionTries = 0;
+    public int answerIndex = -1, score = 0, highScore = 0, questionCount = 0, connectionTries = 0;
 
     [Range(-1, 2)]
     [HideInInspector]
     public int difficulty = 0;
     [Range(-3, 6)]
+    //[SerializeField]
     int currentScoreCombo = 0;
 
     [HideInInspector]
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     
     [SerializeField]
     Slider timeRemainingSlider;
+
+    public AudioClip winSoundClip;
 
     DatabaseReference reference;
 
@@ -86,6 +89,9 @@ public class GameManager : MonoBehaviour
                     //get the difficulty
                     difficulty = (int)json["game"]["difficulty"].f;
 
+                    //get the highscore
+                    highScore = (int)json["game"]["highscore"].f;
+
                     //get the questions
                     json = json["questions"];
 
@@ -103,7 +109,6 @@ public class GameManager : MonoBehaviour
                         }
 
                         questions.Add(ques);
-                        Logger.d(ques.question);
                     }
 
                     GetNextQuextion(difficulty);
@@ -114,7 +119,7 @@ public class GameManager : MonoBehaviour
                         GamePlayPanel.Instance.buttons[j].transform.GetChild(0).GetComponent<Text>().text = currentQuestion.options[j];
                     }
 
-                    GamePlayPanel.Instance.score.text = difficulty.ToString();// score.ToString();
+                    GamePlayPanel.Instance.score.text = score.ToString();
                     init = true;
                 }
             });
@@ -133,14 +138,23 @@ public class GameManager : MonoBehaviour
             //increment the combo
             ++currentScoreCombo;
 
-            //mormal game stuff
-            ++score;
-            reference.Child("/game/highscore").SetValueAsync(score);
+            //update the player score based oncthe difficulty and how fast they answer the question
+            score += (2 + difficulty) * (int)timeRemainingSlider.value;
 
             //win condition
             if (currentScoreCombo >= 5)
             {
-                Logger.d("WON!!!"); ////todo: show score screen
+                //update the highscore
+                if (score > highScore)
+                {
+                    highScore = score;
+                    reference.Child("/game/highscore").SetValueAsync(score);
+                }
+
+                PlaySound(winSoundClip, 1f);
+                ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
+                ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();
+                StartCoroutine(PanelsManager.PanelsInstance.ShowGameScore());
             }
         }
         else
@@ -152,10 +166,27 @@ public class GameManager : MonoBehaviour
             //subtract the combo
             --currentScoreCombo;
 
+            //penalize the player for missing a question based on the difficulty and how slow they answer the question
+            if(score >= 1)
+                score -= (2 - difficulty) * (int)timeRemainingSlider.value;
+            
+            //adjust score value -- cannot be negative
+            if (score < 0)
+                score = 0;
+
             //lose condition
             if (currentScoreCombo <= -3)
             {
-                Logger.d("LOSE!!!"); ////todo:show score screen
+                //update the highscore
+                if (score > highScore)
+                {
+                    highScore = score;
+                    reference.Child("/game/highscore").SetValueAsync(score);
+                }
+
+                ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
+                ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();
+                StartCoroutine(PanelsManager.PanelsInstance.ShowGameScore());
             }
         }
 
@@ -166,15 +197,7 @@ public class GameManager : MonoBehaviour
 
         GetNextQuextion(difficulty);
 
-        //set ui elements to show new question stuff
-        GamePlayPanel.Instance.question.text = currentQuestion.question;
-
-        for (int i = 0; i < currentQuestion.options.Count; i++)
-        {
-            GamePlayPanel.Instance.buttons[i].transform.GetChild(0).GetComponent<Text>().text = currentQuestion.options[i];
-        }
-
-        GamePlayPanel.Instance.score.text = difficulty.ToString();// score.ToString();
+        GamePlayPanel.Instance.score.text = score.ToString();
     }
 
     public int GetNextQuestionDifficulty(int combo, int _difficulty)
@@ -198,5 +221,30 @@ public class GameManager : MonoBehaviour
         currentQuestionTime = Time.time + timePerQuestion;
         var questionsForDifficulty = questions.FindAll(n => n.difficulty == difficulty);
         currentQuestion =  questionsForDifficulty[Random.Range(0, questionsForDifficulty.Count)];
+
+        //set ui elements to show new question stuff
+        GamePlayPanel.Instance.question.text = currentQuestion.question;
+
+        for (int i = 0; i < currentQuestion.options.Count; i++)
+        {
+            GamePlayPanel.Instance.buttons[i].transform.GetChild(0).GetComponent<Text>().text = currentQuestion.options[i];
+        }
+    }
+
+    public void ResetGameForNewSession()
+    {
+        //get next question
+        GetNextQuextion(difficulty);
+        //reset game score
+        score = 0;
+        //set game score text
+        GamePlayPanel.Instance.score.text = score.ToString();
+        //reset the game combo count
+        currentScoreCombo = 0;
+    }
+
+    public void PlaySound(AudioClip clip, float volume = .5f)
+    {
+        AudioSource.PlayClipAtPoint(clip, transform.position, volume);
     }
 }

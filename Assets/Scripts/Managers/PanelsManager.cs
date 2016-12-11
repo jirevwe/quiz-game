@@ -8,6 +8,7 @@ public class PanelsManager : MonoBehaviour {
     public LoadingPanel loadingPanel;
     public GamePlayPanel gamePlayPanel;
     public GameTitlePanel gameTitlePanel;
+    public ScorePanel scorePanel;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class PanelsManager : MonoBehaviour {
 
         gameTitlePanel.HideSmoothly();
         gamePlayPanel.HideSmoothly();
+        scorePanel.HideSmoothly();
 
         StartCoroutine(ShowMenu(1f));
     }
@@ -32,6 +34,7 @@ public class PanelsManager : MonoBehaviour {
 
         gameTitlePanel.HideSmoothly();
         gamePlayPanel.HideSmoothly();
+        scorePanel.HideSmoothly();
 
         StartCoroutine(StartGame());
     }
@@ -39,9 +42,10 @@ public class PanelsManager : MonoBehaviour {
     public void GoToGame()
     {
         gamePlayPanel.ShowSmoothly();
-        GameManager.Instance.GetNextQuextion(GameManager.Instance.difficulty);
+        GameManager.Instance.ResetGameForNewSession();
 
         gameTitlePanel.HideSmoothly();
+        scorePanel.HideSmoothly();
         loadingPanel.HideSmoothly();
     }
 
@@ -50,6 +54,17 @@ public class PanelsManager : MonoBehaviour {
         yield return new WaitForSeconds(time);
         gameTitlePanel.ShowSmoothly();
 
+        scorePanel.HideSmoothly();
+        loadingPanel.HideSmoothly();
+        gamePlayPanel.HideSmoothly();
+    }
+
+    public IEnumerator ShowGameScore()
+    {
+        yield return new WaitForSeconds(0.1f);
+        scorePanel.ShowSmoothly();
+
+        gamePlayPanel.HideSmoothly();
         loadingPanel.HideSmoothly();
         gamePlayPanel.HideSmoothly();
     }
