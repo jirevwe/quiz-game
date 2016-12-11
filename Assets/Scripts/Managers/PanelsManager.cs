@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class Panels : MonoBehaviour {
+public class PanelsManager : MonoBehaviour {
 
-    public static Panels PanelsInstance;
+    public static PanelsManager PanelsInstance;
 
     public LoadingPanel loadingPanel;
     public GamePlayPanel gamePlayPanel;

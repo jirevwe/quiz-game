@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [Range(-3, 6)]
     int currentScoreCombo = 0;
 
-    //[HideInInspector]
+    [HideInInspector]
     public bool done = false, init = false;
 
     string data = "";
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void GetQuestionTime()
     {
-        if(currentQuestionTime - Time.time >= 0 && Panels.PanelsInstance.gamePlayPanel.myPanel.alpha == 1f)
+        if(currentQuestionTime - Time.time >= 0 && PanelsManager.PanelsInstance.gamePlayPanel.myPanel.alpha == 1f)
             timeRemainingSlider.value = currentQuestionTime - Time.time;
     }
 

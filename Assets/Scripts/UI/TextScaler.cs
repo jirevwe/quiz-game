@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Text))]
-public class UIScaler : MonoBehaviour {
+public class TextScaler : MonoBehaviour {
 
     Text text;
     Vector2 screenSize;

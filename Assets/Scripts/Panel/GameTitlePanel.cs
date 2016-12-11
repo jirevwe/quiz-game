@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 public class GameTitlePanel : PanelBase {
 
 	// Use this for initialization
@@ -16,6 +13,6 @@ public class GameTitlePanel : PanelBase {
 
     public void GetPlayClick()
     {
-        Panels.PanelsInstance.ShowLoadingToGame();
+        PanelsManager.PanelsInstance.ShowLoadingToGame();
     }
 }

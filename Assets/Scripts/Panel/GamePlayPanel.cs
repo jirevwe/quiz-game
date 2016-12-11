@@ -44,6 +44,6 @@ public class GamePlayPanel : PanelBase {
 
     public void GetMenuClick()
     {
-        Panels.PanelsInstance.ShowLoadingToMenu();
+        PanelsManager.PanelsInstance.ShowLoadingToMenu();
     }
 }

@@ -16,12 +16,13 @@ public class SliderScaler : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         screenSize.x = Screen.width;
-        if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+        screenSize.y = Screen.height;
+        if (screenSize.y < screenSize.x || Input.deviceOrientation == DeviceOrientation.LandscapeLeft || Input.deviceOrientation == DeviceOrientation.LandscapeRight)
         {
             rect.offsetMin = new Vector2(500, -70);
             rect.offsetMax = new Vector2(-500, 0);
         }
-        else if (Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
+        else if (screenSize.y > screenSize.x || Input.deviceOrientation == DeviceOrientation.Portrait || Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
         {
             rect.offsetMin = new Vector2(100, -70);
             rect.offsetMax = new Vector2(-100, 0);
