@@ -13,4 +13,9 @@ public class GameTitlePanel : PanelBase {
 	void Update () {
 		
 	}
+
+    public void GetPlayClick()
+    {
+        Panels.PanelsInstance.ShowLoadingToGame();
+    }
 }

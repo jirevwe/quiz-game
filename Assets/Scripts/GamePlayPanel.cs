@@ -41,4 +41,9 @@ public class GamePlayPanel : PanelBase {
         GameManager.Instance.answerIndex = 3;
         GameManager.Instance.GetClick();
     }
+
+    public void GetMenuClick()
+    {
+        Panels.PanelsInstance.ShowLoadingToMenu();
+    }
 }

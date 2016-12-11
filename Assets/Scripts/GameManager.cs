@@ -9,17 +9,19 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public List<Question> questions = new List<Question>();
-    public Question currentQuestion;
+    List<Question> questions = new List<Question>();
+    Question currentQuestion;
     [HideInInspector]
-    public int answerIndex = -1, score = 0, questionCount = 0;
+    public int answerIndex = -1, score = 0, questionCount = 0, connectionTries = 0;
 
     [Range(-1, 2)]
+    [HideInInspector]
     public int difficulty = 0;
     [Range(-3, 6)]
-    public int currentScoreCombo = 0;
+    int currentScoreCombo = 0;
 
-    bool done = false, init = false;
+    //[HideInInspector]
+    public bool done = false, init = false;
 
     string data = "";
 
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
 
+        //keep trying to get data from the online server
         if (!init)
             InvokeRepeating("Init", 2, 2);
         else
@@ -59,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void GetQuestionTime()
     {
-        if(currentQuestionTime - Time.time >= 0)
+        if(currentQuestionTime - Time.time >= 0 && Panels.PanelsInstance.gamePlayPanel.myPanel.alpha == 1f)
             timeRemainingSlider.value = currentQuestionTime - Time.time;
     }
 
@@ -111,6 +114,7 @@ public class GameManager : MonoBehaviour
                         GamePlayPanel.Instance.buttons[j].transform.GetChild(0).GetComponent<Text>().text = currentQuestion.options[j];
                     }
 
+                    GamePlayPanel.Instance.score.text = difficulty.ToString();// score.ToString();
                     init = true;
                 }
             });
@@ -119,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     public void GetClick()
     {
-        //check of the player got the question
+        //check if the player got the question
         if(answerIndex == currentQuestion.answerIndex)
         {
             //reset the combo if the player failed the last question
@@ -136,7 +140,7 @@ public class GameManager : MonoBehaviour
             //win condition
             if (currentScoreCombo >= 5)
             {
-                Logger.d("WON!!!");
+                Logger.d("WON!!!"); ////todo: show score screen
             }
         }
         else
@@ -151,7 +155,7 @@ public class GameManager : MonoBehaviour
             //lose condition
             if (currentScoreCombo <= -3)
             {
-                Logger.d("LOSE!!!");
+                Logger.d("LOSE!!!"); ////todo:show score screen
             }
         }
 
@@ -159,9 +163,6 @@ public class GameManager : MonoBehaviour
 
         //save the new difficulty
         reference.Child("/game/difficulty").SetValueAsync(difficulty);
-
-        //reset the time
-        currentQuestionTime = Time.time + timePerQuestion;
 
         GetNextQuextion(difficulty);
 
@@ -193,6 +194,8 @@ public class GameManager : MonoBehaviour
     //get next question of the required difficulty
     public void GetNextQuextion(int difficulty)
     {
+        //reset the time
+        currentQuestionTime = Time.time + timePerQuestion;
         var questionsForDifficulty = questions.FindAll(n => n.difficulty == difficulty);
         currentQuestion =  questionsForDifficulty[Random.Range(0, questionsForDifficulty.Count)];
     }

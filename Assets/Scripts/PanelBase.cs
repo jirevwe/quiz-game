@@ -11,72 +11,55 @@ public abstract class PanelBase : MonoBehaviour {
 
     public void HideSmoothly(float time = 0.2f, float delay = 0)
     {
-        if (this.gameObject.activeInHierarchy)
-        {
-            if (delay == 0)
-            {
-                DOTween.To(() => this.myPanel.alpha, a => this.myPanel.alpha = a, 0.0f, time).OnComplete(this.HideInstantly);
-            }
-            else
-            {
-                StartCoroutine(this.HideSmoothlyIE(time, delay));
-            }
-        }
+        if (delay == 0)
+            DOTween.To(() => myPanel.alpha, a => myPanel.alpha = a, 0.0f, time).OnComplete(HideInstantly);
+        else
+            StartCoroutine(HideSmoothlyIE(time, delay));
     } // HideSmoothly
 
     private IEnumerator HideSmoothlyIE(float time, float delay)
     {
-        if (this.gameObject.activeInHierarchy)
-        {
-            yield return new WaitForSeconds(delay);
-            DOTween.To(() => this.myPanel.alpha, a => this.myPanel.alpha = a, 0.0f, time).OnComplete(this.HideInstantly);
-        }
+        yield return new WaitForSeconds(delay);
+        DOTween.To(() => myPanel.alpha, a => myPanel.alpha = a, 0.0f, time).OnComplete(HideInstantly);
     } // HideSmoothly
 
-    public void ShowSmoothly(float time = 0.2f, bool setActive = true)
+    public void ShowSmoothly(float time = 0.2f)
     {
-        if (setActive)
-        {
-            this.gameObject.SetActive(true); 
-        }
-        if (this.gameObject.activeInHierarchy)
-        {
-            DOTween.To(() => this.myPanel.alpha, a => this.myPanel.alpha = a, 1.0f, time).OnComplete(this.ShowInstantly);
-        }
+        DOTween.To(() => myPanel.alpha, a => myPanel.alpha = a, 1.0f, time).OnComplete(ShowInstantly);
     } // ShowSmoothly
 
     public void HideInstantly()
     {
-        this.gameObject.SetActive(false);
-        this.myPanel.interactable = false;
-        this.myPanel.alpha = 0.0f;
-        this.PanelClosed();
+        myPanel.interactable = false;
+        myPanel.alpha = 0.0f;
+        myPanel.blocksRaycasts = false;
+        PanelClosed();
     } // HideInstantly
 
     public void ShowInstantly()
     {
-        this.gameObject.SetActive(true);
-        this.myPanel.alpha = 1.0f;
-        this.myPanel.interactable = true;
-        this.PanelOpened();
+        myPanel.alpha = 1.0f;
+        myPanel.blocksRaycasts = true;
+        myPanel.interactable = true;
+        PanelOpened();
     } // ShowInstantly
 
     public virtual void PanelOpened()
     {
         Invoke("AllowClick", 0.1f);
+        //Logger.d(myPanel.gameObject.name + " opened");
     } // PanelOpened
 
     public virtual void PanelClosed()
     {
-        this.panelClickAllowed = false;
-        this.myPanel.interactable = false;
+        panelClickAllowed = false;
+        myPanel.interactable = false;
+        //Logger.d(myPanel.gameObject.name + " closed");
     } // PanelOpened
 
     void AllowClick()
     {
-        this.panelClickAllowed = true;
-        this.myPanel.interactable = true;
-
+        panelClickAllowed = true;
+        myPanel.interactable = true;
     } // AllowClick
-
 } // PanelBase
