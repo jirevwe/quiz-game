@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -67,6 +68,10 @@ public class GameManager : MonoBehaviour
     {
         if(currentQuestionTime - Time.time >= 0 && PanelsManager.PanelsInstance.gamePlayPanel.myPanel.alpha == 1f)
             timeRemainingSlider.value = currentQuestionTime - Time.time;
+        else if(currentQuestionTime - Time.time <= 0 && PanelsManager.PanelsInstance.gamePlayPanel.myPanel.alpha == 1f)
+        {
+            GameCompleteActions();
+        }
     }
 
     public void Init()
@@ -112,13 +117,6 @@ public class GameManager : MonoBehaviour
                     }
 
                     GetNextQuextion(difficulty);
-                    GamePlayPanel.Instance.question.text = currentQuestion.question;
-
-                    for (int j = 0; j < currentQuestion.options.Count; j++)
-                    {
-                        GamePlayPanel.Instance.buttons[j].transform.GetChild(0).GetComponent<Text>().text = currentQuestion.options[j];
-                    }
-
                     GamePlayPanel.Instance.score.text = score.ToString();
                     init = true;
                 }
@@ -144,18 +142,14 @@ public class GameManager : MonoBehaviour
             //win condition
             if (currentScoreCombo >= 5)
             {
-                //update the highscore
-                if (score > highScore)
-                {
-                    highScore = score;
-                    reference.Child("/game/highscore").SetValueAsync(score);
-                }
-
-                PlaySound(winSoundClip, 1f);
-                ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
-                ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();
-                StartCoroutine(PanelsManager.PanelsInstance.ShowGameScore());
+                GameCompleteActions(winSoundClip);
             }
+
+            GamePlayPanel.Instance.score.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), .5f).OnComplete(() => { GamePlayPanel.Instance.score.transform.localScale = Vector3.one; });
+            DOTween.To(() => GamePlayPanel.Instance.score.color, color => GamePlayPanel.Instance.score.color = color, Color.blue, 0.5f).OnComplete(() =>
+            {
+                GamePlayPanel.Instance.score.color = Color.white;
+            });
         }
         else
         {
@@ -177,17 +171,14 @@ public class GameManager : MonoBehaviour
             //lose condition
             if (currentScoreCombo <= -3)
             {
-                //update the highscore
-                if (score > highScore)
-                {
-                    highScore = score;
-                    reference.Child("/game/highscore").SetValueAsync(score);
-                }
-
-                ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
-                ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();
-                StartCoroutine(PanelsManager.PanelsInstance.ShowGameScore());
+                GameCompleteActions();
             }
+
+            GamePlayPanel.Instance.score.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), .5f).OnComplete(() => { GamePlayPanel.Instance.score.transform.localScale = Vector3.one; });
+            DOTween.To(() => GamePlayPanel.Instance.score.color, color => GamePlayPanel.Instance.score.color = color, Color.red, 0.5f).OnComplete(() =>
+            {
+                GamePlayPanel.Instance.score.color = Color.white;
+            });
         }
 
         difficulty = GetNextQuestionDifficulty(currentScoreCombo, currentQuestion.difficulty);
@@ -204,21 +195,22 @@ public class GameManager : MonoBehaviour
     {
         var newDifficulty = combo + _difficulty;
 
-        if (newDifficulty == 0)     //decrease or increase the difficulty
-            newDifficulty = 0;
-        else if (newDifficulty < 0) //reduce the difficulty
+        if (newDifficulty < 0)      //reduce the difficulty
             newDifficulty = -1;
         else if (newDifficulty > 0) //increase the difficulty
             newDifficulty = 1;
+        else                        //decrease or increase the difficulty
+            newDifficulty = 0;
 
         return newDifficulty;
     }
 
-    //get next question of the required difficulty
     public void GetNextQuextion(int difficulty)
     {
         //reset the time
         currentQuestionTime = Time.time + timePerQuestion;
+
+        //get the next question using the new difficulty
         var questionsForDifficulty = questions.FindAll(n => n.difficulty == difficulty);
         currentQuestion =  questionsForDifficulty[Random.Range(0, questionsForDifficulty.Count)];
 
@@ -241,6 +233,23 @@ public class GameManager : MonoBehaviour
         GamePlayPanel.Instance.score.text = score.ToString();
         //reset the game combo count
         currentScoreCombo = 0;
+    }
+
+    public void GameCompleteActions(AudioClip winLoseSoundClip = null)
+    {
+        //update the highscore
+        if (score > highScore)
+        {
+            highScore = score;
+            reference.Child("/game/highscore").SetValueAsync(score);
+        }
+
+        if(winLoseSoundClip != null)
+            PlaySound(winSoundClip, 1f);
+
+        ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
+        ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();
+        StartCoroutine(PanelsManager.PanelsInstance.ShowGameScore());
     }
 
     public void PlaySound(AudioClip clip, float volume = .5f)
