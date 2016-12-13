@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     List<Question> questions = new List<Question>();
-    [SerializeField]Question currentQuestion;
+    Question currentQuestion;
     [HideInInspector]
     public int answerIndex = -1, score = 0, highScore = 0, questionCount = 0, connectionTries = 0;
 
@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int difficulty = 0;
     [Range(-3, 6)]
-    //[SerializeField]
     int currentScoreCombo = 0;
 
     [HideInInspector]
@@ -34,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Slider timeRemainingSlider;
 
-    public AudioClip winSoundClip;
+    public AudioClip winSoundClip, loseSoundClip;
 
     DatabaseReference reference;
 
@@ -145,11 +144,17 @@ public class GameManager : MonoBehaviour
                 GameCompleteActions(winSoundClip);
             }
 
+            //fancy stuff
             GamePlayPanel.Instance.score.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), .5f).OnComplete(() => { GamePlayPanel.Instance.score.transform.localScale = Vector3.one; });
             DOTween.To(() => GamePlayPanel.Instance.score.color, color => GamePlayPanel.Instance.score.color = color, Color.blue, 0.5f).OnComplete(() =>
             {
                 GamePlayPanel.Instance.score.color = Color.white;
             });
+            //more fancy stuff: combo score shake
+            GamePlayPanel.Instance.combo.gameObject.SetActive(true);
+            GamePlayPanel.Instance.combo.color = Color.blue;
+            GamePlayPanel.Instance.combo.text = currentScoreCombo.ToString();
+            GamePlayPanel.Instance.combo.transform.DOShakeScale(1f, new Vector3(1, 1, 1.1f)).OnComplete(() => { GamePlayPanel.Instance.combo.gameObject.SetActive(false); });
         }
         else
         {
@@ -171,14 +176,20 @@ public class GameManager : MonoBehaviour
             //lose condition
             if (currentScoreCombo <= -3)
             {
-                GameCompleteActions();
+                GameCompleteActions(loseSoundClip);
             }
 
+            //fancy stuff
             GamePlayPanel.Instance.score.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), .5f).OnComplete(() => { GamePlayPanel.Instance.score.transform.localScale = Vector3.one; });
             DOTween.To(() => GamePlayPanel.Instance.score.color, color => GamePlayPanel.Instance.score.color = color, Color.red, 0.5f).OnComplete(() =>
             {
                 GamePlayPanel.Instance.score.color = Color.white;
             });
+            //more fancy stuff: combo score shake
+            GamePlayPanel.Instance.combo.gameObject.SetActive(true);
+            GamePlayPanel.Instance.combo.color = Color.red;
+            GamePlayPanel.Instance.combo.text = currentScoreCombo.ToString();
+            GamePlayPanel.Instance.combo.transform.DOShakeScale(1f, new Vector3(1, 1, 1.1f)).OnComplete(() => { GamePlayPanel.Instance.combo.gameObject.SetActive(false); });
         }
 
         difficulty = GetNextQuestionDifficulty(currentScoreCombo, currentQuestion.difficulty);
@@ -235,7 +246,7 @@ public class GameManager : MonoBehaviour
         currentScoreCombo = 0;
     }
 
-    public void GameCompleteActions(AudioClip winLoseSoundClip = null)
+    public void GameCompleteActions(AudioClip _winLoseSoundClip = null)
     {
         //update the highscore
         if (score > highScore)
@@ -244,8 +255,8 @@ public class GameManager : MonoBehaviour
             reference.Child("/game/highscore").SetValueAsync(score);
         }
 
-        if(winLoseSoundClip != null)
-            PlaySound(winSoundClip, 1f);
+        if(_winLoseSoundClip != null)
+            PlaySound(_winLoseSoundClip, 1f);
 
         ScorePanel.Instance.scoreText.text = "score: " + score.ToString();
         ScorePanel.Instance.highScoreText.text = "highscore: " + highScore.ToString();

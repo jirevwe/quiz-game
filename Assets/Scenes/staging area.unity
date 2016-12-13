@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 90077510}
   - component: {fileID: 90077506}
   m_Layer: 5
-  m_Name: option 4
+  m_Name: button_option 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 103358784}
   - component: {fileID: 103358785}
   m_Layer: 5
-  m_Name: Error Text
+  m_Name: text_error
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -727,7 +727,7 @@ GameObject:
   - component: {fileID: 197616228}
   - component: {fileID: 197616224}
   m_Layer: 5
-  m_Name: option 2
+  m_Name: button_option 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1212,7 +1212,7 @@ GameObject:
   - component: {fileID: 569705235}
   - component: {fileID: 569705238}
   m_Layer: 5
-  m_Name: title_screen
+  m_Name: text_title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1650,7 +1650,7 @@ GameObject:
   - component: {fileID: 832876884}
   - component: {fileID: 832876883}
   m_Layer: 5
-  m_Name: Score
+  m_Name: text_score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1738,7 +1738,7 @@ GameObject:
   - component: {fileID: 937892334}
   - component: {fileID: 937892333}
   m_Layer: 5
-  m_Name: Score_image
+  m_Name: image_score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1838,11 +1838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499aa2c63c23231478990560b0553636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentQuestion:
-    question: 
-    difficulty: 0
-    options: []
-    answerIndex: 0
   answerIndex: -1
   score: 0
   highScore: 0
@@ -1854,6 +1849,7 @@ MonoBehaviour:
   timePerQuestion: 10
   timeRemainingSlider: {fileID: 1200313332}
   winSoundClip: {fileID: 8300000, guid: 8c32603ffa720d44fab786364a56654c, type: 3}
+  loseSoundClip: {fileID: 8300000, guid: 846a1b57e6439a24a9caf0d5b9c3430d, type: 3}
 --- !u!114 &1021416527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1960,7 +1956,7 @@ GameObject:
   - component: {fileID: 1093604232}
   - component: {fileID: 1093604231}
   m_Layer: 5
-  m_Name: BG
+  m_Name: image_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2031,7 +2027,7 @@ GameObject:
   - component: {fileID: 1172392330}
   - component: {fileID: 1172392326}
   m_Layer: 5
-  m_Name: option 1
+  m_Name: button_option 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2175,7 +2171,7 @@ GameObject:
   - component: {fileID: 1200313332}
   - component: {fileID: 1200313333}
   m_Layer: 5
-  m_Name: question_time_slider
+  m_Name: slider_question_time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2274,7 +2270,7 @@ GameObject:
   - component: {fileID: 1204786926}
   - component: {fileID: 1204786922}
   m_Layer: 5
-  m_Name: option 3
+  m_Name: button_option 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2407,6 +2403,80 @@ MonoBehaviour:
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &1342957975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1342957976}
+  - component: {fileID: 1342957978}
+  - component: {fileID: 1342957977}
+  m_Layer: 5
+  m_Name: text_combo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1342957976
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342957975}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2013393886}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -36, y: -50}
+  m_SizeDelta: {x: 70, y: 70}
+  m_Pivot: {x: 1, y: 0}
+--- !u!114 &1342957977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342957975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: be00abace37ce9b4489fcc445556e9e1, type: 3}
+    m_FontSize: 48
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 64
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: x2
+--- !u!222 &1342957978
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1342957975}
 --- !u!1 &1506542956
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,7 +2689,7 @@ GameObject:
   - component: {fileID: 1545668735}
   - component: {fileID: 1545668736}
   m_Layer: 5
-  m_Name: title_screen
+  m_Name: text_title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3302,6 +3372,7 @@ MonoBehaviour:
   - {fileID: 1204786926}
   - {fileID: 90077510}
   score: {fileID: 832876884}
+  combo: {fileID: 1342957977}
 --- !u!225 &2004567253
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3326,7 +3397,7 @@ GameObject:
   - component: {fileID: 2013393889}
   - component: {fileID: 2013393890}
   m_Layer: 5
-  m_Name: Question
+  m_Name: text_question
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3341,7 +3412,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1342957976}
   m_Father: {fileID: 2004567249}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3430,7 +3502,7 @@ GameObject:
   - component: {fileID: 2105358989}
   - component: {fileID: 2105358992}
   m_Layer: 5
-  m_Name: Loading Text
+  m_Name: text_loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -6,6 +6,7 @@ public class GamePlayPanel : PanelBase {
     public Text question;
     public List<Button> buttons;
     public Text score;
+    public Text combo;
 
     public static GamePlayPanel Instance;
 
