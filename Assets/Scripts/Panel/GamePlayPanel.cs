@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GamePlayPanel : PanelBase {
@@ -16,8 +17,9 @@ public class GamePlayPanel : PanelBase {
     }
 	
 	void Update () {
-		
-	}
+        if (Input.GetKeyUp(KeyCode.Escape) && myPanel.alpha == 1)
+            OnBackClick();
+    }
 
     public void SetObjecive_1()
     {
@@ -45,6 +47,12 @@ public class GamePlayPanel : PanelBase {
 
     public void GetMenuClick()
     {
+        PanelsManager.PanelsInstance.ShowLoadingToMenu();
+    }
+
+    public override void OnBackClick()
+    {
+        //go back to main menu
         PanelsManager.PanelsInstance.ShowLoadingToMenu();
     }
 }

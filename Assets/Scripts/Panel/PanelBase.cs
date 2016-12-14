@@ -9,6 +9,8 @@ public abstract class PanelBase : MonoBehaviour {
     [HideInInspector]
     public bool panelClickAllowed = false;
 
+    public abstract void OnBackClick();
+
     public void HideSmoothly(float time = 0.2f, float delay = 0)
     {
         if (delay == 0)

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
+using UnityEngine;
 
 public class ScorePanel : PanelBase {
     public Text scoreText, highScoreText;
@@ -19,8 +19,9 @@ public class ScorePanel : PanelBase {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (Input.GetKeyUp(KeyCode.Escape) && myPanel.alpha == 1)
+            OnBackClick();
+    }
 
     public void GetReplayClick()
     {
@@ -29,6 +30,12 @@ public class ScorePanel : PanelBase {
 
     public void GetMenuClick()
     {
+        PanelsManager.PanelsInstance.ShowLoadingToMenu();
+    }
+
+    public override void OnBackClick()
+    {
+        //go back to main menu
         PanelsManager.PanelsInstance.ShowLoadingToMenu();
     }
 }

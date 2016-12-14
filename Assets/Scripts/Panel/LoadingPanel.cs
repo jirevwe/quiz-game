@@ -35,4 +35,9 @@ public class LoadingPanel : PanelBase {
     {
         StopCoroutine(Load());
     }
+
+    public override void OnBackClick()
+    {
+        //do nothing
+    }
 }
